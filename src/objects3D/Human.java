@@ -43,13 +43,16 @@ public class Human {
     // To make the GL11.glPushMatrix() and GL11.glPopMatrix() more clearly,
     // I write comment of them for the stack size
     // For example: (stack 1: pelvis stack 2: chest)
-    public void DrawHuman(float delta, boolean GoodAnimation, Texture headTexture, Texture tnt, Texture grenade) {
+    public void DrawHuman(float delta,boolean walk, boolean cut, Texture headTexture, Texture tnt, Texture grenade) {
         float theta = (float) (delta * 2 * Math.PI);
-        float LimbRotation; // degree from -45 to 45
-        if (GoodAnimation) {
-            LimbRotation = (float) Math.cos(theta * 5) * 45; // I speed up the rotation of the human's leg, it looks more natural
-        } else {
-            LimbRotation = 0;
+
+        float WalkRotation = (float) Math.cos(theta * 5) * 45; // I speed up the rotation of the human's leg, it looks more natural
+        float CutTreeRotation = (float) Math.cos(theta * 5) * 45; // -45 ~ 0 ~ 45
+        if(!walk){
+            WalkRotation = 0.0f;
+        }
+        if(!cut){
+            CutTreeRotation = 0.0f;
         }
 
         Sphere sphere = new Sphere();
@@ -77,6 +80,7 @@ public class Human {
                 GL11.glTranslatef(0.0f, 0.5f, 0.0f);
                 GL11.glScalef(1.0f, 1.0f, 1.0f);
                 GL11.glRotatef(90, 1.0f, 0.0f, 0.0f); // rotate to make the texture looks right // rotate stack 1 push
+                GL11.glRotatef(CutTreeRotation/4, 0.0f, 0.0f, 1.0f); // rotate to make the texture looks right // rotate stack 1 push
                 Color.white.bind();
                 tnt.bind();
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -118,17 +122,21 @@ public class Human {
                     GL11.glMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE, Utils.ConvertForGL(blue));
                     GL11.glPushMatrix(); // stack 3 push
                     {
+
                         GL11.glTranslatef(0.5f, 0.4f, 0.0f);
                         sphere.DrawSphere(0.25f, 32, 32);
 
                         // left arm
                         GL11.glColor3f(orange[0], orange[1], orange[2]);
                         GL11.glMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT_AND_DIFFUSE, Utils.ConvertForGL(orange));
+
                         GL11.glPushMatrix(); // stack 4 push
                         {
                             GL11.glTranslatef(0.0f, 0.0f, 0.0f);
                             GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-                            GL11.glRotatef(LimbRotation, 1.0f, 0.0f, 0.0f); // rotate the arm, it has limited rotation degree
+                            GL11.glRotatef(WalkRotation, 1.0f, 0.0f, 0.0f); // rotate the arm, it has limited rotation degree
+                            if(cut)
+                                GL11.glRotatef(CutTreeRotation/2+22.5f, 0.0f, 1.0f, 1.0f);
                             cylinder.DrawCylinder(0.15f, 0.7f, 32);
 
                             // left elbow
@@ -154,6 +162,7 @@ public class Human {
                                         GL11.glTranslatef(0.0f, 0.0f, 0.75f);
                                         GL11.glScalef(1.0f, 1.0f, 1.0f);
                                         GL11.glRotatef(270.0f, 1.0f, 0.0f, 0.0f); // rotate to make the texture looks right
+                                        GL11.glRotatef(90.0f, 0.0f, 0.0f, 1.0f); // rotate to make the texture looks right
                                         // because this is the last Matrix pushed, so it is no need to anti-rotate
                                         Color.white.bind();
                                         grenade.bind();
@@ -161,6 +170,15 @@ public class Human {
                                         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
                                         texSphere.DrawTexSphere(0.2f, 32, 32, grenade);
 
+                                    }
+                                    { // saw
+                                        GL11.glPushMatrix();
+                                        GL11.glScalef(1.0f, 0.1f, 0.1f);
+                                        GL11.glTranslatef(-1.0f, 0.0f, 0.0f);
+                                        tnt.bind();
+                                        TexCube saw = new TexCube();
+                                        saw.DrawTexCube(tnt);
+                                        GL11.glPopMatrix();
                                     }
                                     GL11.glPopMatrix(); // stack 7 pop
                                 }
@@ -189,7 +207,11 @@ public class Human {
                         {
                             GL11.glTranslatef(0.0f, 0.0f, 0.0f);
                             GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-                            GL11.glRotatef(-LimbRotation, 1.0f, 0.0f, 0.0f); // rotate the arm, it has limited rotation degree
+                            GL11.glRotatef(-WalkRotation, 1.0f, 0.0f, 0.0f); // rotate the arm, it has limited rotation degree
+                            if(cut) {
+                                GL11.glRotatef(-45, 0.0f, 1.0f, 1.0f); // cut
+                                GL11.glRotatef(45, 1.0f, 0.0f, 0.0f); // cut
+                            }
                             cylinder.DrawCylinder(0.15f, 0.7f, 32);
 
                             // right elbow
@@ -207,6 +229,8 @@ public class Human {
                                 {
                                     GL11.glTranslatef(0.0f, 0.0f, 0.0f);
                                     GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+                                    if(cut)
+                                        GL11.glRotatef(55, 0.0f, 1.0f, 0.0f); // cut
                                     cylinder.DrawCylinder(0.1f, 0.7f, 32);
 
                                     // right hand
@@ -251,7 +275,7 @@ public class Human {
                     {
                         GL11.glTranslatef(0.0f, 0.0f, 0.0f);
                         GL11.glRotatef(0.0f, 0.0f, 0.0f, 0.0f);
-                        GL11.glRotatef((+LimbRotation / 2) + 90, 1.0f, 0.0f, 0.0f); // rotate the leg, it has limited rotation degree
+                        GL11.glRotatef((+WalkRotation / 2) + 90, 1.0f, 0.0f, 0.0f); // rotate the leg, it has limited rotation degree
                         cylinder.DrawCylinder(0.15f, 0.7f, 32);
 
                         // left knee
@@ -260,7 +284,9 @@ public class Human {
                         GL11.glPushMatrix(); // stack 4 push
                         {
                             GL11.glTranslatef(0.0f, 0.0f, 0.75f);
-                            GL11.glRotatef(-Math.abs(LimbRotation) / 2, 1.0f, 0.0f, 0.0f);
+                            GL11.glRotatef(-Math.abs(WalkRotation) / 2, 1.0f, 0.0f, 0.0f);
+                            if(cut)
+                                GL11.glRotatef(-25, 1.0f, 0.0f, 0.0f); // cut bottom
                             // this rotates degree from -22.5 to 0
                             // the knee cannot bend backward, so it has to lower than 0
                             sphere.DrawSphere(0.25f, 32, 32);
@@ -313,7 +339,9 @@ public class Human {
                     {
                         GL11.glTranslatef(0.0f, 0.0f, 0.0f);
                         GL11.glRotatef(0.0f, 0.0f, 0.0f, 0.0f);
-                        GL11.glRotatef((-LimbRotation / 2) + 90, 1.0f, 0.0f, 0.0f); // rotate the leg, it has limited rotation degree
+                        GL11.glRotatef((-WalkRotation / 2) + 90, 1.0f, 0.0f, 0.0f); // rotate the leg, it has limited rotation degree
+                        if(cut)
+                            GL11.glRotatef(25, 1.0f, 0.0f, 0.0f); // cut bottom
                         cylinder.DrawCylinder(0.15f, 0.7f, 32);
 
 
@@ -323,7 +351,9 @@ public class Human {
                         GL11.glPushMatrix(); // stack 4 push
                         {
                             GL11.glTranslatef(0.0f, 0.0f, 0.75f);
-                            GL11.glRotatef(-Math.abs(LimbRotation) / 2, 0.0f, 0.0f, 0.0f); // this rotates degree from -22.5 to 0
+                            GL11.glRotatef(-Math.abs(WalkRotation) / 2, 0.0f, 0.0f, 0.0f); // this rotates degree from -22.5 to 0
+                            if(cut)
+                                GL11.glRotatef(-25, 0.0f, 0.0f, 0.0f); // cut bottom
                             sphere.DrawSphere(0.25f, 32, 32);
 
                             // right low leg
