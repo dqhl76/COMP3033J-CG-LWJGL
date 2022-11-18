@@ -99,7 +99,52 @@ public class TexCube {
         GL11.glEnd();
     }
 
+    public void DrawTexCubeEx(Texture texture, Integer ex) {
+        // all same with Cube, except the texture part
+        // I pass the texture in it because TexSphere also pass it in
+        // It might be used in the future
 
+        // vertices for a cube
+
+
+        // one face has 4 vertices
+        GL11.glBegin(GL11.GL_QUADS);
+
+        for (int face = 0; face < 6; face++) { // 6 faces for a cube
+            Vector4f v = vertices[faces[face][1]].MinusPoint(vertices[faces[face][0]]);
+            Vector4f w = vertices[faces[face][3]].MinusPoint(vertices[faces[face][0]]);
+            Vector4f normal = v.cross(w).Normal(); // v and w is perpendicular, normal is the face's normal vector
+
+            GL11.glNormal3f(normal.x, normal.y, normal.z); // set normal vector
+
+            if(face == ex){
+                GL11.glTexCoord2f(0.0f, 1.0f); // s = 0 t = 1
+                GL11.glVertex3f(vertices[faces[face][0]].x, vertices[faces[face][0]].y, vertices[faces[face][0]].z);
+
+                GL11.glTexCoord2f(0.0f, 0.0f); // s = 0 t = 0
+                GL11.glVertex3f(vertices[faces[face][1]].x, vertices[faces[face][1]].y, vertices[faces[face][1]].z);
+
+                GL11.glTexCoord2f(1.0f, 0.0f); // s = 1 t = 0
+                GL11.glVertex3f(vertices[faces[face][2]].x, vertices[faces[face][2]].y, vertices[faces[face][2]].z);
+
+                GL11.glTexCoord2f(1.0f, 1.0f); // s = 1 t = 1
+                GL11.glVertex3f(vertices[faces[face][3]].x, vertices[faces[face][3]].y, vertices[faces[face][3]].z);
+
+            }else{
+                GL11.glVertex3f(vertices[faces[face][0]].x, vertices[faces[face][0]].y, vertices[faces[face][0]].z);
+
+                GL11.glVertex3f(vertices[faces[face][1]].x, vertices[faces[face][1]].y, vertices[faces[face][1]].z);
+
+                GL11.glVertex3f(vertices[faces[face][2]].x, vertices[faces[face][2]].y, vertices[faces[face][2]].z);
+
+                GL11.glVertex3f(vertices[faces[face][3]].x, vertices[faces[face][3]].y, vertices[faces[face][3]].z);
+
+            }
+
+
+        }
+        GL11.glEnd();
+    }
 
 }
  

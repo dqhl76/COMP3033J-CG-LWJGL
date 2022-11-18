@@ -1,6 +1,6 @@
-import GraphicsObjects.Arcball;
-import GraphicsObjects.Mine;
-import GraphicsObjects.Utils;
+import GraphicsObjects.*;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
+import objects3D.Mine;
 import objects3D.*;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -10,16 +10,16 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
+import java.applet.AudioClip;
+import java.io.File;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.security.Key;
 import java.util.logging.Logger;
-
-import static org.lwjgl.opengl.GL11.*;
 
 // Main windows class controls and creates the 3D virtual world , please do not change this class but edit the other classes to complete the assignment.
 // Main window is built upon the standard Helloworld LWJGL class which I have heavily modified to use as your standard openGL environment.
@@ -27,14 +27,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 // Do not touch this class, I will be making a version of it for your 3rd Assignment
 public class MainWindow {
+    private Camera camera;
 
     private boolean MouseOnepressed = true;
     private boolean dragMode = false;
 
-    /**
-     * position of pointer
-     */
-    float x = 400, y = 300;
     /**
      * angle of rotation
      */
@@ -56,7 +53,7 @@ public class MainWindow {
     float Alpha = 0; //to use for animation
     long StartTime; // beginAnimiation
 
-    Arcball MyArcball = new Arcball();
+//    Arcball MyArcball = new Arcball();
 
     boolean DRAWGRID = false;
     boolean waitForKeyrelease = true;
@@ -112,6 +109,7 @@ public class MainWindow {
         }
 
         initGL(); // init OpenGL
+        new CameraAnimate(camera,10,StartTime).start(); // start the camera animation thread
         getDelta(); // call once before loop to initialise lastFrame
         lastFPS = getTime(); // call before loop to initialise fps timer
 
@@ -124,6 +122,17 @@ public class MainWindow {
         }
 
         Display.destroy();
+    }
+
+    public void initMusic(){
+        //Music
+        try {
+            AudioClip clip = java.applet.Applet.newAudioClip(new File("res/music.mp3").toURI().toURL());
+            clip.play();
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
     }
 
     public void update(int delta) {
@@ -142,7 +151,7 @@ public class MainWindow {
         if (MouseButonPressed && !MouseOnepressed) {
             MouseOnepressed = true;
             //  System.out.println("Mouse drag mode");
-            MyArcball.startBall(MouseX, MouseY, 1200, 800);
+//            MyArcball.startBall(MouseX, MouseY, 1200, 800);
             dragMode = true;
 
 
@@ -153,37 +162,67 @@ public class MainWindow {
         }
 
         if (dragMode) {
-            MyArcball.updateBall(MouseX, MouseY, 1200, 800);
+//            MyArcball.updateBall(MouseX, MouseY, 1200, 800);
         }
 
         if (WheelPostion > 0) {
-            OrthoNumber += 10;
+            camera.OrthNumber += 10;
 
         }
 
         if (WheelPostion < 0) {
-            OrthoNumber -= 10;
-            if (OrthoNumber < 610) {
-                OrthoNumber = 610;
+            camera.OrthNumber -= 10;
+            if (camera.OrthNumber < 610) {
+                camera.OrthNumber = 610;
             }
 
             //  System.out.println("Orth nubmer = " +  OrthoNumber);
 
         }
 
-        /** rest key is R*/
-        if (Keyboard.isKeyDown(Keyboard.KEY_R))
-            MyArcball.reset();
+        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+            System.out.println("LEFT key pressed");
+            camera.position.x += 1f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+            System.out.println("RIGHT key pressed");
+            camera.position.x -= 1f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+            System.out.println("UP key pressed");
+            camera.position.y -= 1f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            System.out.println("DOWN key pressed");
+            camera.position.y += 1f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+            System.out.println("SPACE key pressed");
+            camera.position.z += 10f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            System.out.println("LShift key pressed");
+            camera.position.z -= 10f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            System.out.println("W key pressed");
+            camera.rotation.x -= 0.01f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            System.out.println("S key pressed");
+            camera.rotation.x += 0.01f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            System.out.println("A key pressed");
+            camera.rotation.y -= 0.05f;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            System.out.println("D key pressed");
+            camera.rotation.y += 0.05f;
+        }
+//            MyArcball.reset();
 
-        /* bad animation can be turn on or off using A key)*/
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_D))
-            x += 0.35f * delta;
+        if (Keyboard.isKeyDown(255)) {
+            System.out.println("D key pressed");
+            camera.position.x += 0.1f;
+        }
 
         if (Keyboard.isKeyDown(Keyboard.KEY_W))
-            y += 0.35f * delta;
+
         if (Keyboard.isKeyDown(Keyboard.KEY_S))
-            y -= 0.35f * delta;
+
 
         if (Keyboard.isKeyDown(Keyboard.KEY_Q))
             rotation += 0.35f * delta;
@@ -211,16 +250,6 @@ public class MainWindow {
 
         }
 
-
-        // keep quad on the screen
-        if (x < 0)
-            x = 0;
-        if (x > 1200)
-            x = 1200;
-        if (y < 0)
-            y = 0;
-        if (y > 800)
-            y = 800;
 
         updateFPS(); // update FPS Counter
 
@@ -263,10 +292,10 @@ public class MainWindow {
     }
 
     public void initGL() {
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        changeOrth();
-        MyArcball.startBall(0, 0, 1200, 800);
+
+        camera = new Camera(new Point4f(0,0,8,0),new Vector4f(1f,0,0,0),OrthoNumber);
+        camera.update();
+
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         FloatBuffer lightPos = BufferUtils.createFloatBuffer(4);
         lightPos.put(10000f).put(1000f).put(1000).put(0).flip();
@@ -281,33 +310,20 @@ public class MainWindow {
         lightPos4.put(1000f).put(1000f).put(1000f).put(0).flip();
 
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPos); // specify the
-        // position
-        // of the
-        // light
-        // GL11.glEnable(GL11.GL_LIGHT0); // switch light #0 on // I've setup specific materials so in real light it will look abit strange
 
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPos); // specify the
-        // position
-        // of the
-        // light
         GL11.glEnable(GL11.GL_LIGHT1); // switch light #0 on
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, Utils.ConvertForGL(spot));
 
         GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPos3); // specify
-        // the
-        // position
-        // of the
-        // light
         GL11.glEnable(GL11.GL_LIGHT2); // switch light #0 on
         GL11.glLight(GL11.GL_LIGHT2, GL11.GL_DIFFUSE, Utils.ConvertForGL(grey));
 
-        GL11.glLight(GL11.GL_LIGHT3, GL11.GL_POSITION, lightPos4); // specify
-        // the
-        // position
-        // of the
-        // light
+
         GL11.glEnable(GL11.GL_LIGHT3); // switch light #0 on
         GL11.glLight(GL11.GL_LIGHT3, GL11.GL_DIFFUSE, Utils.ConvertForGL(grey));
+
+
 
         GL11.glEnable(GL11.GL_LIGHTING); // switch lighting on
         GL11.glEnable(GL11.GL_DEPTH_TEST); // make sure depth buffer is switched
@@ -328,32 +344,35 @@ public class MainWindow {
     }
 
 
-    public void changeOrth() {
-
-        GL11.glMatrixMode(GL11.GL_PROJECTION); // Apply subsequent matrix operations to the projection matrix stack
-        GL11.glLoadIdentity(); // Resets the currently specified matrix to a unit matrix
-        GL11.glOrtho(1200 - OrthoNumber, OrthoNumber, (800 - (OrthoNumber * 0.66f)), (OrthoNumber * 0.66f), 100000, -100000);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-        FloatBuffer CurrentMatrix = BufferUtils.createFloatBuffer(16);
-        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, CurrentMatrix);
-
-        //	if(MouseOnepressed)
-        //	{
-
-        MyArcball.getMatrix(CurrentMatrix);
-        //	}
-
-        GL11.glLoadMatrix(CurrentMatrix);
-
-    }
+//    public void changeOrth() {
+//
+//        GL11.glMatrixMode(GL11.GL_PROJECTION); // Apply subsequent matrix operations to the projection matrix stack
+//        GL11.glLoadIdentity(); // Resets the currently specified matrix to a unit matrix
+//        GL11.glOrtho(1200 - OrthoNumber, OrthoNumber, (800 - (OrthoNumber * 0.66f)), (OrthoNumber * 0.66f), 100000, -100000);
+//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//
+//        FloatBuffer CurrentMatrix = BufferUtils.createFloatBuffer(16);
+//        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, CurrentMatrix);
+//
+//        //	if(MouseOnepressed)
+//        //	{
+//
+//        MyArcball.getMatrix(CurrentMatrix);
+//        //	}
+//
+//        GL11.glLoadMatrix(CurrentMatrix);
+//
+//    }
 
     /*
      * You can edit this method to add in your own objects /  remember to load in textures in the INIT method as they take time to load
      *
      */
+
+
+
     public void renderGL() {
-        changeOrth();
+        camera.update();
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -362,7 +381,8 @@ public class MainWindow {
         myDelta = getTime() - StartTime;
         float delta = ((float) myDelta) / 10000;
         int millisecond = ((int) myDelta); // 1000 milliseconds in a second
-        System.out.println(millisecond);
+//        millisecond += 24000;
+//        System.out.println(millisecond);
         // code to aid in animation
         float theta = (float) (delta * 2 * Math.PI);
         float thetaDeg = delta * 360;
@@ -373,6 +393,9 @@ public class MainWindow {
          * This code draws a grid to help you view the human models movement
          *  You may change this code to move the grid around and change its starting angle as you please
          */
+
+
+
         if (DRAWGRID) {
             GL11.glPushMatrix();
             Grid MyGrid = new Grid();
@@ -399,47 +422,93 @@ public class MainWindow {
 
         {
             Rail MyRail = new Rail();
+            if(millisecond <= 27000){
+                for (int i = 0; i < 30; i++) {
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(i*160, 0, 0);
+                    MyRail.DrawRail(rail);
+                    GL11.glPopMatrix();
+                }
+            }else{
+                for (int i = 0; i < 30; i++) {
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(i*160, 0, 0);
+                    MyRail.DrawRail(rail_activate);
+                    GL11.glPopMatrix();
+                }
+            }
+        }
+
+        {
+
+            Wall MyWall = new Wall();
             for (int i = 0; i < 30; i++) {
                 GL11.glPushMatrix();
-                GL11.glTranslatef(i*100, 0, 0);
-                MyRail.DrawRail(rail);
+                GL11.glTranslatef(i*160, 0, 160);
+                MyWall.DrawWall(wall);
                 GL11.glPopMatrix();
             }
         }
 
         {
-            GL11.glPushMatrix();
-            Mine mine1 = new Mine();
-            mine1.DrawMine(mine, blackTexture);
-            GL11.glPopMatrix();
+            Picture MyPicture = new Picture();
+            for(int i=0;i<5;++i) {
+                GL11.glPushMatrix();
+                GL11.glTranslatef(500+1000*i, 540, 1040);
+                GL11.glScalef(80f, 80f, 8f);
+                valley_2022.bind();
+                MyPicture.DrawPicture(valley_2022);
+                GL11.glPopMatrix();
+            }
         }
+
         {
+            Sign MySign = new Sign();
+            MySign.DrawSign(train);
+        }
+
+
+        {
+            boolean run = false;
             GL11.glPushMatrix();
             Mine mine1 = new Mine();
+            if(millisecond >= 27000){
+                GL11.glTranslatef((millisecond-27000)/10,0,0);
+            }
             mine1.DrawMine(mine, blackTexture);
             GL11.glPopMatrix();
         }
+
 
 //        System.out.println("timestamp: " + millisecond);
         // draw the human
         {
             GL11.glPushMatrix();
-            Human MyHuman = new Human();
+            NPC1 npc1 = new NPC1();
             GL11.glTranslatef(1000, 200, 0);
             GL11.glScalef(90f, 90f, 90f);
             if(millisecond <= 9500){
                 GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
                 GL11.glTranslatef(0,0,(float) (-millisecond/1000.0) );
-                MyHuman.DrawHuman(delta,true,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
+                npc1.DrawHuman(delta,true,false,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
 
             }else if(millisecond <= 16000 && millisecond >9500){
                 GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
                 GL11.glTranslatef(0,0,-9.5f );
-                MyHuman.DrawHuman(delta,false,true, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
-            }else{
-                GL11.glRotatef(-45, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
+                npc1.DrawHuman(delta,false,true,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
+            }else if(millisecond <= 25000 && millisecond >16000){
+                GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
                 GL11.glTranslatef(0,0,-9.5f );
-                MyHuman.DrawHuman(delta,true,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
+                GL11.glRotatef(245, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
+                GL11.glTranslatef(0,0,(float) (-(millisecond-16000)/1000.0) );
+                npc1.DrawHuman(delta,true,false,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
+            }else{
+                GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
+                GL11.glTranslatef(0,0,-9.5f );
+                GL11.glRotatef(245, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
+                GL11.glTranslatef(0,0, -9.0f);
+                GL11.glRotatef(165, 0.0f, 1.0f, 0.0f);
+                npc1.DrawHuman(delta,false,false,true, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
             }
 //            GL11.glTranslatef(-posn_x * 3, 0.0f, -posn_y * 3);
             // insert your animation code to correct the postion for the human rotating
@@ -447,9 +516,6 @@ public class MainWindow {
         }
 
 
-        {
-
-        }
 
     }
 
@@ -458,7 +524,7 @@ public class MainWindow {
         hello.start();
     }
 
-    Texture valley_2022, headTexture, tnt, grenade, planks, leaves, floor, rail, mine, blackTexture;
+    Texture valley_2022, headTexture, tnt, grenade, planks, leaves, floor, rail, mine, blackTexture, rail_activate, wall,train;
 
     /*
      * Any additional textures for your assignment should be written in here.
@@ -467,6 +533,12 @@ public class MainWindow {
     public void init() throws IOException {
         Logger logger = Logger.getGlobal();
         logger.info("Loading textures...");
+
+        train = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/train.png"));
+
+        wall = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/wall.png"));
+
+        rail_activate = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/rail_activate.png"));
 
         mine = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/minecart.png"));
 

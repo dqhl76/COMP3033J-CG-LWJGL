@@ -4,28 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="init">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/LWJGL.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/black.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/dark_oak_leaves.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/floor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/grenade.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/head.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/minecart.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/planks_jungle.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/rail.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/tnt.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/valley_2022.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GraphicsObjects/Mine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Floor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Rail.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Tree.java" afterDir="false" />
+    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add tree and railway">
+      <change afterPath="$PROJECT_DIR$/res/music.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/rail_activate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/train.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/res/wall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraAnimate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/objects3D/NPC1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/objects3D/Picture.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/objects3D/Sign.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/objects3D/Wall.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CG_Final.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CG_Final.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects3D/Human.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Human.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Arcball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Arcball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Mine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Mine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/Rail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Rail.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/objects3D/TexCube.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/TexCube.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Tree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +99,8 @@
       <option name="presentableId" value="Default" />
       <updated>1668510863310</updated>
       <workItem from="1668510864637" duration="11115000" />
-      <workItem from="1668562513827" duration="35326000" />
+      <workItem from="1668562513827" duration="43509000" />
+      <workItem from="1668657055698" duration="26860000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1668511381449</created>
@@ -112,7 +109,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668511381449</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: add tree and railway">
+      <created>1668608322208</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1668608322208</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +135,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+    <MESSAGE value="feat: add tree and railway" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add tree and railway" />
   </component>
 </project>
