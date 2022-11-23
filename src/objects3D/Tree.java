@@ -26,28 +26,14 @@ public class Tree {
         cube.DrawTexCube(planks);
         float time = (float) (militime * 1.2);
         {
-            if(down){
+            if (militime >= 48000 && militime < 50000) {
                 GL11.glPushMatrix();
-                if(militime >= 27000){
-                    GL11.glTranslatef((float) ((militime-27000)/1000*1.25),0,0);
-                }
-                if(time <= 22000) {
-                    GL11.glTranslatef(0.0f, 1.0f, -1.0f);
-                    GL11.glScalef(1.0f, 1.0f, 1.0f);
-                    GL11.glRotatef(time / 100 - 40, 1.0f, 0.0f, 0.0f);
-                    GL11.glTranslatef(0.0f, -1.0f, 1.0f);
-                }else{
-                    GL11.glTranslatef(0.0f, 1.0f, -1.0f);
-                    GL11.glRotatef(180,1.0f,0.0f,0.0f);
-                    GL11.glTranslatef(0.0f, -1.0f, 1.0f);
-                    if(time <= 23000) {
-                        GL11.glTranslatef(0.0f, 0.0f, -(time - 22000) / 10000.0f * 18);
-                    }else{
-                        GL11.glTranslatef(0.0f, 0.0f, -(23000 - 22000) / 10000.0f * 18);
-
-                    }
-                }
-
+                GL11.glTranslatef(0.0f,(float) (48400-militime)/1000*6f, 0.0f);
+                GL11.glTranslatef((float) ((48000 - 27000) / 1000 * 1.25), 0, 0);
+                GL11.glTranslatef(0.0f, 1.0f, -1.0f);
+                GL11.glRotatef(180, 1.0f, 0.0f, 0.0f);
+                GL11.glTranslatef(0.0f, -1.0f, 1.0f);
+                GL11.glTranslatef(0.0f, 0.0f, -(23000 - 22000) / 10000.0f * 18);
                 cube.DrawTexCube(planks);
                 {
                     GL11.glPushMatrix();
@@ -63,9 +49,58 @@ public class Tree {
 
                 }
                 GL11.glPopMatrix();
+            }else if(militime >= 50000) {
+                Wood wood = new Wood();
+                if(militime>=62000) {
+                    if((militime-62000)/3000f<1) {
+                        GL11.glScalef(1,1, 1 - (militime - 62000) / 3000f);
+                    }else{
+                        GL11.glScalef(0f,0f, 0f);
+                    }
+                }
+                wood.DrawWood(planks);
+            }
+            else {
+                if (down) {
+                    GL11.glPushMatrix();
+                    if (militime >= 27000) {
+                        GL11.glTranslatef((float) ((militime - 27000) / 1000 * 1.25), 0, 0);
+                    }
+                    if (time <= 22000) {
+                        GL11.glTranslatef(0.0f, 1.0f, -1.0f);
+                        GL11.glScalef(1.0f, 1.0f, 1.0f);
+                        GL11.glRotatef(time / 100 - 40, 1.0f, 0.0f, 0.0f);
+                        GL11.glTranslatef(0.0f, -1.0f, 1.0f);
+                    } else {
+                        GL11.glTranslatef(0.0f, 1.0f, -1.0f);
+                        GL11.glRotatef(180, 1.0f, 0.0f, 0.0f);
+                        GL11.glTranslatef(0.0f, -1.0f, 1.0f);
+                        if (time <= 23000) {
+                            GL11.glTranslatef(0.0f, 0.0f, -(time - 22000) / 10000.0f * 18);
+                        } else {
+                            GL11.glTranslatef(0.0f, 0.0f, -(23000 - 22000) / 10000.0f * 18);
+
+                        }
+                    }
+
+                    cube.DrawTexCube(planks);
+                    {
+                        GL11.glPushMatrix();
+                        GL11.glTranslatef(0.0f, -2.0f, 0.0f);
+                        cube.DrawTexCube(planks);
+                        {
+                            GL11.glPushMatrix();
+                            GL11.glTranslatef(0.0f, -2.0f, 0.0f);
+                            cube.DrawTexCube(planks);
+                            GL11.glPopMatrix();
+                        }
+                        GL11.glPopMatrix();
+
+                    }
+                    GL11.glPopMatrix();
+                }
             }
         }
-
         GL11.glPopMatrix();
 
 

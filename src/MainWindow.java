@@ -10,6 +10,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -53,7 +54,7 @@ public class MainWindow {
     float Alpha = 0; //to use for animation
     long StartTime; // beginAnimiation
 
-//    Arcball MyArcball = new Arcball();
+    Arcball MyArcball = new Arcball();
 
     boolean DRAWGRID = false;
     boolean waitForKeyrelease = true;
@@ -109,7 +110,7 @@ public class MainWindow {
         }
 
         initGL(); // init OpenGL
-        new CameraAnimate(camera,10,StartTime).start(); // start the camera animation thread
+//        new CameraAnimate(camera,10,StartTime).start(); // start the camera animation thread
         getDelta(); // call once before loop to initialise lastFrame
         lastFPS = getTime(); // call before loop to initialise fps timer
 
@@ -150,19 +151,16 @@ public class MainWindow {
 
         if (MouseButonPressed && !MouseOnepressed) {
             MouseOnepressed = true;
-            //  System.out.println("Mouse drag mode");
-//            MyArcball.startBall(MouseX, MouseY, 1200, 800);
+            MyArcball.startBall(MouseX, MouseY, 1200, 800);
             dragMode = true;
-
-
         } else if (!MouseButonPressed) {
-            // System.out.println("Mouse drag mode end ");
             MouseOnepressed = false;
             dragMode = false;
         }
 
+
         if (dragMode) {
-//            MyArcball.updateBall(MouseX, MouseY, 1200, 800);
+            MyArcball.updateBall(MouseX, MouseY, 1200, 800);
         }
 
         if (WheelPostion > 0) {
@@ -180,48 +178,37 @@ public class MainWindow {
 
         }
 
+        if (Keyboard.isKeyDown(Keyboard.KEY_R))
+            MyArcball.reset();
+
         if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-            System.out.println("LEFT key pressed");
-            camera.position.x += 1f;
+            camera.position.x += 5f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-            System.out.println("RIGHT key pressed");
-            camera.position.x -= 1f;
+            camera.position.x -= 5f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            System.out.println("UP key pressed");
-            camera.position.y -= 1f;
+            camera.position.y -= 5f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            System.out.println("DOWN key pressed");
-            camera.position.y += 1f;
+            camera.position.y += 5f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            System.out.println("SPACE key pressed");
             camera.position.z += 10f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            System.out.println("LShift key pressed");
             camera.position.z -= 10f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            System.out.println("W key pressed");
-            camera.rotation.x -= 0.01f;
+            camera.rotation.x -= 0.05f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            System.out.println("S key pressed");
-            camera.rotation.x += 0.01f;
+            camera.rotation.x += 0.05f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            System.out.println("A key pressed");
             camera.rotation.y -= 0.05f;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            System.out.println("D key pressed");
             camera.rotation.y += 0.05f;
         }
+
+//        System.out.println(camera.position);
 //            MyArcball.reset();
 
 
-        if (Keyboard.isKeyDown(255)) {
-            System.out.println("D key pressed");
-            camera.position.x += 0.1f;
-        }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_W))
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_S))
 
 
         if (Keyboard.isKeyDown(Keyboard.KEY_Q))
@@ -293,7 +280,7 @@ public class MainWindow {
 
     public void initGL() {
 
-        camera = new Camera(new Point4f(0,0,8,0),new Vector4f(1f,0,0,0),OrthoNumber);
+        camera = new Camera(new Point4f(-1600.0f,0.0f,0.0f,0.0f),new Vector4f(-13f,0,0,0),OrthoNumber);
         camera.update();
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
@@ -313,7 +300,7 @@ public class MainWindow {
 
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPos); // specify the
         GL11.glEnable(GL11.GL_LIGHT1); // switch light #0 on
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, Utils.ConvertForGL(spot));
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, Utils.ConvertForGL(grey));
 
         GL11.glLight(GL11.GL_LIGHT2, GL11.GL_POSITION, lightPos3); // specify
         GL11.glEnable(GL11.GL_LIGHT2); // switch light #0 on
@@ -378,7 +365,8 @@ public class MainWindow {
         GL11.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
-        myDelta = getTime() - StartTime;
+//        myDelta = getTime() - StartTime;
+        myDelta = getTime() - StartTime +42000;
         float delta = ((float) myDelta) / 10000;
         int millisecond = ((int) myDelta); // 1000 milliseconds in a second
 //        millisecond += 24000;
@@ -410,7 +398,6 @@ public class MainWindow {
             f.draw(floor);
         }
 
-
         {
             Tree MyTree = new Tree();
             if(millisecond>=12000) {
@@ -419,6 +406,7 @@ public class MainWindow {
                 MyTree.DrawTree(planks,leaves,false,millisecond);
             }
         }
+
 
         {
             Rail MyRail = new Rail();
@@ -437,6 +425,25 @@ public class MainWindow {
                     GL11.glPopMatrix();
                 }
             }
+        }
+
+        {
+
+            GL11.glPushMatrix();
+            GL11.glTranslatef(2100, 400, 1000);
+            GL11.glRotatef(-45, 1, 0, 0);
+            if(millisecond >= 48000 && millisecond <= 48450) {
+                GL11.glTranslatef(0,-40,0);
+                GL11.glRotatef((float) (millisecond - 48000) / 10, -1, 0, 0); // -45 degree - 45 degree
+                GL11.glTranslatef(0,40,0);
+            }else if(millisecond>48450){
+                GL11.glTranslatef(0,-40,0);
+                GL11.glRotatef(45, -1, 0, 0);
+                GL11.glTranslatef(0,40,0);
+            }
+            Torch torch = new Torch();
+            torch.DrawTorch(wood,torch2);
+            GL11.glPopMatrix();
         }
 
         {
@@ -462,26 +469,51 @@ public class MainWindow {
             }
         }
 
+
         {
+            GL11.glPushMatrix();
             Sign MySign = new Sign();
             MySign.DrawSign(train);
+            GL11.glPopMatrix();
         }
+
+        {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(2100f,700f,1100f);
+            GL11.glScalef(80f, 80f, 80f);
+            GL11.glRotatef(270, 1, 0, 0);
+            Color.white.bind();
+            TexCube cube = new TexCube();
+            stop_sign.bind();
+            cube.DrawTexCubeEx(stop_sign,5);
+            GL11.glPopMatrix();
+        }
+
 
 
         {
             boolean run = false;
             GL11.glPushMatrix();
             Mine mine1 = new Mine();
-            if(millisecond >= 27000){
+            if(millisecond >= 27000 && millisecond < 48000){
                 GL11.glTranslatef((millisecond-27000)/10,0,0);
+            }else if(millisecond >= 48000){
+                GL11.glTranslatef((48000-27000)/10,0,0);
             }
             mine1.DrawMine(mine, blackTexture);
             GL11.glPopMatrix();
         }
+        {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(1800,250,-30);
+            GL11.glScalef(80f, 80f, 80f);
+            TexCube cube = new TexCube();
+            cube.DrawTexCubeForDifferentTextures(crafting_top,crafting_bottom,crafting_side);
+            GL11.glPopMatrix();
+        }
 
-
-//        System.out.println("timestamp: " + millisecond);
-        // draw the human
+        System.out.println("timestamp: " + millisecond);
+        // draw the NPC1
         {
             GL11.glPushMatrix();
             NPC1 npc1 = new NPC1();
@@ -515,6 +547,38 @@ public class MainWindow {
             GL11.glPopMatrix();
         }
 
+        {
+            if(millisecond >= 41000) {
+                GL11.glPushMatrix();
+                NPC2 npc2 = new NPC2();
+                if(millisecond<=50000) {
+                    GL11.glTranslatef(2100, 200, 900);
+                    GL11.glScalef(90f, 90f, 90f);
+                    GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
+                    npc2.DrawHuman(delta, false,false, headTexture, tnt, grenade, millisecond);
+                }else if(millisecond<=53000){
+                    GL11.glTranslatef(2100, 200, 900);
+                    GL11.glTranslatef(-(millisecond-50000)/10,0,0);
+                    GL11.glScalef(90f, 90f, 90f);
+                    GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f);
+                    npc2.DrawHuman(delta, true,false, headTexture, tnt, grenade, millisecond);
+                }else if(millisecond<=61000){
+                    GL11.glTranslatef(1800, 200, 900);
+                    GL11.glTranslatef(0,0,-(millisecond-53000)/10);
+                    GL11.glScalef(90f, 90f, 90f);
+                    npc2.DrawHuman(delta, true,false, headTexture, tnt, grenade, millisecond);
+                }else if(millisecond<=71000){
+                    GL11.glTranslatef(1800, 200, 0);
+                    GL11.glScalef(90f, 90f, 90f);
+                    npc2.DrawHuman(delta, false,true, headTexture, tnt, grenade, millisecond);
+
+                }
+                GL11.glPopMatrix();
+            }
+        }
+
+
+
 
 
     }
@@ -524,15 +588,29 @@ public class MainWindow {
         hello.start();
     }
 
-    Texture valley_2022, headTexture, tnt, grenade, planks, leaves, floor, rail, mine, blackTexture, rail_activate, wall,train;
-
+    Texture valley_2022, headTexture, tnt, grenade, planks, leaves, floor, rail, mine, blackTexture, rail_activate,
+            wall,train,wood,torch2,stop_sign,crafting_bottom,crafting_top,crafting_side;
+    Skybox skybox;
     /*
      * Any additional textures for your assignment should be written in here.
-     * Make a new texture variable for each one so they can be loaded in at the beginning
+     * Make a new texture variable for each one, so they can be loaded in at the beginning
      */
     public void init() throws IOException {
         Logger logger = Logger.getGlobal();
         logger.info("Loading textures...");
+//        skybox = new Skybox();
+
+        crafting_bottom = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/crafting_table/crafting_table_bottom.png"));
+
+        crafting_top = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/crafting_table/crafting_table_top.png"));
+
+        crafting_side = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/crafting_table/crafting_table_front.png"));
+
+        stop_sign = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/stop_sign.png"));
+
+        torch2 = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/torch2.png"));
+
+        wood = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/planks_oak.png"));
 
         train = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/train.png"));
 

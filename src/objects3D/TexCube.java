@@ -3,6 +3,7 @@ package objects3D;
 import GraphicsObjects.Point4f;
 import GraphicsObjects.Vector4f;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 import static org.lwjgl.opengl.GL11.glGenLists;
@@ -143,6 +144,86 @@ public class TexCube {
 
 
         }
+        GL11.glEnd();
+    }
+
+    public void DrawTexCubeForDifferentTextures(Texture top, Texture bottom, Texture side){
+
+
+        Color.white.bind();
+        bottom.bind();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(1, 1);
+        GL11.glVertex3f(-1f, -1f, -1f);
+        GL11.glTexCoord2f(1, 0);
+        GL11.glVertex3f(-1, -1f, 1f);
+        GL11.glTexCoord2f(0, 0);
+        GL11.glVertex3f(1f, -1f, 1f);
+        GL11.glTexCoord2f(0, 1);
+        GL11.glVertex3f(1f, -1f, -1f);
+        GL11.glEnd();
+
+
+
+
+        side.bind();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(1, 1);
+        GL11.glVertex3f(1, -1, -1);
+        GL11.glTexCoord2f(0, 1);
+        GL11.glVertex3f(-1, -1, -1);
+        GL11.glTexCoord2f(0, 0);
+        GL11.glVertex3f(-1, 1, -1);
+        GL11.glTexCoord2f(1, 0);
+        GL11.glVertex3f(1, 1, -1);
+        GL11.glEnd();
+
+        side.bind();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(1, 1);
+        GL11.glVertex3f(-1, -1, -1);
+        GL11.glTexCoord2f(0, 1);
+        GL11.glVertex3f(-1, -1, 1);
+        GL11.glTexCoord2f(0, 0);
+        GL11.glVertex3f(-1, 1, 1);
+        GL11.glTexCoord2f(1, 0);
+        GL11.glVertex3f(-1, 1, -1);
+        GL11.glEnd();
+
+        side.bind();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(1, 1);
+        GL11.glVertex3f(1, -1, 1);
+        GL11.glTexCoord2f(0, 1);
+        GL11.glVertex3f(1, -1, -1);
+        GL11.glTexCoord2f(0, 0);
+        GL11.glVertex3f(1, 1, -1);
+        GL11.glTexCoord2f(1, 0);
+        GL11.glVertex3f(1, 1, 1);
+        GL11.glEnd();
+
+        side.bind();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(1, 1);
+        GL11.glVertex3f(-1, -1, 1);
+        GL11.glTexCoord2f(0, 1);
+        GL11.glVertex3f(1, -1, 1);
+        GL11.glTexCoord2f(0, 0);
+        GL11.glVertex3f(1, 1, 1);
+        GL11.glTexCoord2f(1, 0);
+        GL11.glVertex3f(-1, 1, 1);
+        GL11.glEnd();
+
+        top.bind();
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2f(1, 1);
+        GL11.glVertex3f(-1, 1, -1);
+        GL11.glTexCoord2f(0, 1);
+        GL11.glVertex3f(-1, 1, 1);
+        GL11.glTexCoord2f(0, 0);
+        GL11.glVertex3f(1, 1, 1);
+        GL11.glTexCoord2f(1, 0);
+        GL11.glVertex3f(1, 1, -1);
         GL11.glEnd();
     }
 
