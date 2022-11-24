@@ -4,32 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add animation">
-      <change afterPath="$PROJECT_DIR$/res/boat.obj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/crafting_table/crafting_table_bottom.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/crafting_table/crafting_table_front.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/crafting_table/crafting_table_side.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/crafting_table/crafting_table_top.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/planks_oak.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/skybox/negx.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/skybox/negy.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/skybox/negz.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/skybox/posx.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/skybox/posy.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/skybox/posz.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/stop_sign.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/res/torch2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Cutmachine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/NPC2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Skybox.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Torch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Wood.java" afterDir="false" />
+    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add crafting table">
+      <change afterPath="$PROJECT_DIR$/src/objects3D/Boat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Arcball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Arcball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/boat.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/music.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CameraAnimate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CameraAnimate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Vector4f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Vector4f.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects3D/Sign.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Sign.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects3D/TexCube.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/TexCube.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects3D/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Tree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/NPC1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/NPC1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/NPC2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/NPC2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +37,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/MainWindow.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/objects3D/Tree.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -70,7 +56,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "JavaSE-1.8",
-    "last_opened_file_path": "/Users/lqyue/IdeaProjects/CG_Final/res/crafting_table",
+    "last_opened_file_path": "/Users/lqyue/IdeaProjects/CG_Final/res",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -117,7 +103,8 @@
       <workItem from="1668510864637" duration="11115000" />
       <workItem from="1668562513827" duration="43509000" />
       <workItem from="1668657055698" duration="42906000" />
-      <workItem from="1669100695036" duration="21252000" />
+      <workItem from="1669100695036" duration="22981000" />
+      <workItem from="1669198819719" duration="13024000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1668511381449</created>
@@ -140,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668751581776</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: add crafting table">
+      <created>1669197084890</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1669197084891</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -161,6 +155,7 @@
     <MESSAGE value="init" />
     <MESSAGE value="feat: add tree and railway" />
     <MESSAGE value="feat: add animation" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add animation" />
+    <MESSAGE value="feat: add crafting table" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add crafting table" />
   </component>
 </project>

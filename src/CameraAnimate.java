@@ -1,35 +1,21 @@
 import GraphicsObjects.Camera;
 import org.lwjgl.Sys;
 
-public class CameraAnimate extends Thread{
+public class CameraAnimate{
     private Camera camera;
-    private int delta;
-    private boolean isRunning = true;
-    private final long StartTime;
-    private long getTime() {
-        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-    }
 
-    public CameraAnimate(Camera camera, int delta,long StartTime){
-        this.StartTime = StartTime;
+    public CameraAnimate(Camera camera){
+
         this.camera = camera;
-        this.delta = delta;
-    }
-    @Override
-    public void run() {
-        while (isRunning){
-            long millis = getTime() - StartTime;
-            if(millis<=9500){
 
-            }
-            try {
-                Thread.sleep(delta);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
-    public void stopThread(){
-        isRunning = false;
+    public void update(long time) {
+        if(time>=33253 && time <= 46670){
+            camera.position.x = (float) (camera.position.x - 1);
+        }else if(time>=46700 && time <= 51700){
+            camera.OrthNumber = camera.OrthNumber - 1;
+            camera.rotation.y = camera.rotation.y - 0.01f;
+            camera.position.y = camera.position.y + 1f;
+        }
     }
 }

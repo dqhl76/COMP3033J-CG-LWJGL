@@ -24,7 +24,9 @@ public class Camera {
         GL11.glLoadIdentity();
         GL11.glOrtho(1200 - OrthNumber, OrthNumber, (800 - (OrthNumber * 0.66f)), (OrthNumber * 0.66f), 100000, -100000);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
+        System.out.println("OrthNumber: " + OrthNumber);
+        System.out.println("position: " + position);
+        System.out.println("rotation: " + rotation);
     }
 
 

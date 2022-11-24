@@ -96,7 +96,7 @@ public class MainWindow {
     // static GLfloat light_position[] = {0.0, 100.0, 100.0, 0.0};
 
     //support method to aid in converting a java float array into a Floatbuffer which is faster for the opengl layer to process
-
+    CameraAnimate cameraAnimate ;
 
     public void start() {
 
@@ -110,6 +110,7 @@ public class MainWindow {
         }
 
         initGL(); // init OpenGL
+        cameraAnimate = new CameraAnimate(camera);
 //        new CameraAnimate(camera,10,StartTime).start(); // start the camera animation thread
         getDelta(); // call once before loop to initialise lastFrame
         lastFPS = getTime(); // call before loop to initialise fps timer
@@ -125,16 +126,6 @@ public class MainWindow {
         Display.destroy();
     }
 
-    public void initMusic(){
-        //Music
-        try {
-            AudioClip clip = java.applet.Applet.newAudioClip(new File("res/music.mp3").toURI().toURL());
-            clip.play();
-        } catch(Exception ex) {
-            System.out.println("Error with playing sound.");
-            ex.printStackTrace();
-        }
-    }
 
     public void update(int delta) {
         // rotate quad
@@ -266,6 +257,8 @@ public class MainWindow {
         return (Sys.getTime() * 1000) / Sys.getTimerResolution();
     }
 
+
+
     /**
      * Calculate the FPS and set it in the title bar
      */
@@ -280,15 +273,16 @@ public class MainWindow {
 
     public void initGL() {
 
-        camera = new Camera(new Point4f(-1600.0f,0.0f,0.0f,0.0f),new Vector4f(-13f,0,0,0),OrthoNumber);
+        camera = new Camera(new Point4f(150.0f,-130.0f,0.0f,0.0f),new Vector4f(-13.2f,15.35f,0,0),OrthoNumber);
+        camera.OrthNumber = 1570;
         camera.update();
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         FloatBuffer lightPos = BufferUtils.createFloatBuffer(4);
-        lightPos.put(10000f).put(1000f).put(1000).put(0).flip();
+        lightPos.put(0f).put(1000f).put(0).put(-1000f).flip();
 
         FloatBuffer lightPos2 = BufferUtils.createFloatBuffer(4);
-        lightPos2.put(0f).put(1000f).put(0).put(-1000f).flip();
+        lightPos2.put(10000f).put(1000f).put(1000).put(0).flip(); // red
 
         FloatBuffer lightPos3 = BufferUtils.createFloatBuffer(4);
         lightPos3.put(-10000f).put(1000f).put(1000).put(0).flip();
@@ -297,8 +291,10 @@ public class MainWindow {
         lightPos4.put(1000f).put(1000f).put(1000f).put(0).flip();
 
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPos); // specify the
+        GL11.glEnable(GL11.GL_LIGHT0); // enable the light
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE,Utils.ConvertForGL(grey)); // specify the
 
-        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPos); // specify the
+        GL11.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPos2); // specify the
         GL11.glEnable(GL11.GL_LIGHT1); // switch light #0 on
         GL11.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, Utils.ConvertForGL(grey));
 
@@ -366,9 +362,10 @@ public class MainWindow {
         GL11.glColor3f(0.5f, 0.5f, 1.0f);
 
 //        myDelta = getTime() - StartTime;
-        myDelta = getTime() - StartTime +42000;
+        myDelta = getTime() - StartTime+0;
         float delta = ((float) myDelta) / 10000;
         int millisecond = ((int) myDelta); // 1000 milliseconds in a second
+        cameraAnimate.update(millisecond);
 //        millisecond += 24000;
 //        System.out.println(millisecond);
         // code to aid in animation
@@ -479,6 +476,17 @@ public class MainWindow {
 
         {
             GL11.glPushMatrix();
+            GL11.glTranslatef(1040f,175f,900f);
+            GL11.glScalef(50f, 8f, 8f);
+            GL11.glRotatef(90, 1, 0, 0);
+            blackTexture.bind();
+            TexCube cube = new TexCube();
+            cube.DrawTexCube(blackTexture);
+            GL11.glPopMatrix();
+        }
+
+        {
+            GL11.glPushMatrix();
             GL11.glTranslatef(2100f,700f,1100f);
             GL11.glScalef(80f, 80f, 80f);
             GL11.glRotatef(270, 1, 0, 0);
@@ -501,6 +509,16 @@ public class MainWindow {
                 GL11.glTranslatef((48000-27000)/10,0,0);
             }
             mine1.DrawMine(mine, blackTexture);
+            {
+                GL11.glPushMatrix();
+                GL11.glTranslatef(1.5f,-1f,0);
+                GL11.glScalef(1f, 0.1f, 1f);
+                blackTexture.bind();
+                Sphere sphere1 = new Sphere();
+                sphere1.DrawSphere(1f, 32, 32);
+                GL11.glPopMatrix();
+            }
+
             GL11.glPopMatrix();
         }
         {
@@ -510,6 +528,16 @@ public class MainWindow {
             TexCube cube = new TexCube();
             cube.DrawTexCubeForDifferentTextures(crafting_top,crafting_bottom,crafting_side);
             GL11.glPopMatrix();
+            {
+                GL11.glPushMatrix();
+                GL11.glTranslatef(1920,180,-30);
+                GL11.glScalef(80f, 0.1f, 80f);
+                blackTexture.bind();
+                Sphere sphere1 = new Sphere();
+                sphere1.DrawSphere(1f, 32, 32);
+                GL11.glPopMatrix();
+            }
+
         }
 
         System.out.println("timestamp: " + millisecond);
@@ -544,6 +572,7 @@ public class MainWindow {
             }
 //            GL11.glTranslatef(-posn_x * 3, 0.0f, -posn_y * 3);
             // insert your animation code to correct the postion for the human rotating
+
             GL11.glPopMatrix();
         }
 
@@ -571,13 +600,21 @@ public class MainWindow {
                     GL11.glTranslatef(1800, 200, 0);
                     GL11.glScalef(90f, 90f, 90f);
                     npc2.DrawHuman(delta, false,true, headTexture, tnt, grenade, millisecond);
-
+                }else{
+                    GL11.glTranslatef(1800, 200, 0);
+                    GL11.glScalef(90f, 90f, 90f);
+                    npc2.DrawHuman(delta, false,false, headTexture, tnt, grenade, millisecond);
                 }
                 GL11.glPopMatrix();
             }
         }
 
-
+        {
+            if(millisecond>=63500) {
+                Boat boat = new Boat();
+                boat.DrawBoat(planks);
+            }
+        }
 
 
 
@@ -639,5 +676,7 @@ public class MainWindow {
         blackTexture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/black.png"));
 
         logger.info("Textures loaded.");
+
+
     }
 }

@@ -109,6 +109,16 @@ public class NPC1 {
                         GL11.glEnable(GL11.GL_TEXTURE_2D);
                         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
                         head.DrawTexSphere(0.5f, 32, 32, headTexture); // draw the head
+                        {
+                            GL11.glPushMatrix();
+                            GL11.glTranslatef(-0.4f, 0.0f, -3.2f);
+                            GL11.glColor3f(black[0], black[1], black[2]);
+                            GL11.glScalef(1.0f, 1.5f, 0.1f);
+                            Sphere sphere1 = new Sphere();
+                            sphere1.DrawSphere(0.8f, 32, 32);
+                            GL11.glPopMatrix();
+                            Color.white.bind();
+                        }
                         GL11.glPopMatrix(); // stack 4 pop
                     }
                     GL11.glPopMatrix(); // stack 3 pop
