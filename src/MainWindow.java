@@ -402,6 +402,16 @@ public class MainWindow {
             }else{
                 MyTree.DrawTree(planks,leaves,false,millisecond);
             }
+            {
+                GL11.glPushMatrix();
+                GL11.glTranslatef(100, 180, 0);
+                GL11.glScalef(100f, 2f, 100f);
+                blackTexture.bind();
+                Sphere sphere1 = new Sphere();
+                sphere1.DrawSphere(1f, 32, 32);
+                GL11.glPopMatrix();
+            }
+
         }
 
 

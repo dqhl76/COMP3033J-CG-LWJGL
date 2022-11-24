@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add crafting table">
-      <change afterPath="$PROJECT_DIR$/src/objects3D/Boat.java" afterDir="false" />
+    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add animation for camera">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/boat.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/music.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CameraAnimate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CameraAnimate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Vector4f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Vector4f.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects3D/NPC1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/NPC1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/objects3D/NPC2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/NPC2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,8 +60,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/res/crafting_table" />
       <recent name="$PROJECT_DIR$/res" />
+      <recent name="$PROJECT_DIR$/res/crafting_table" />
       <recent name="$PROJECT_DIR$/res/skybox" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$" />
@@ -104,7 +96,7 @@
       <workItem from="1668562513827" duration="43509000" />
       <workItem from="1668657055698" duration="42906000" />
       <workItem from="1669100695036" duration="22981000" />
-      <workItem from="1669198819719" duration="13024000" />
+      <workItem from="1669198819719" duration="15527000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1668511381449</created>
@@ -134,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669197084891</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="feat: add animation for camera">
+      <created>1669257344258</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1669257344259</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +155,7 @@
     <MESSAGE value="feat: add tree and railway" />
     <MESSAGE value="feat: add animation" />
     <MESSAGE value="feat: add crafting table" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add crafting table" />
+    <MESSAGE value="feat: add animation for camera" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add animation for camera" />
   </component>
 </project>
