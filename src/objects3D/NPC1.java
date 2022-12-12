@@ -39,7 +39,7 @@ public class NPC1 {
     // To make the GL11.glPushMatrix() and GL11.glPopMatrix() more clearly,
     // I write comment of them for the stack size
     // For example: (stack 1: pelvis stack 2: chest)
-    public void DrawHuman(float delta,boolean walk, boolean cut,boolean command, Texture headTexture, Texture tnt, Texture grenade) {
+    public void DrawHuman(float delta,boolean walk, boolean cut,boolean command,boolean working, Texture headTexture, Texture tnt, Texture grenade) {
         float theta = (float) (delta * 2 * Math.PI);
 
 
@@ -53,6 +53,8 @@ public class NPC1 {
         if(!cut){
             CutTreeRotation = 0.0f;
         }
+
+        float ArmRotation2 = (float) Math.cos(theta * 5) * 20f;
 
         Sphere sphere = new Sphere();
         Cylinder cylinder = new Cylinder();
@@ -149,6 +151,9 @@ public class NPC1 {
                             if(command){
                                 GL11.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
                             }
+                            if(working)
+                                GL11.glRotatef(30.0f, 1.0f, 0.0f, 0.0f);
+
 
                             cylinder.DrawCylinder(0.15f, 0.7f, 32);
 
@@ -169,6 +174,9 @@ public class NPC1 {
                                     GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
                                     if(command){
                                         GL11.glRotatef(90.0f, -1.0f, 0.0f, 0.0f);
+                                    }
+                                    if(working){
+                                        GL11.glRotatef(ArmRotation2-25, 1.0f, 0.0f, 0.0f);
                                     }
                                     cylinder.DrawCylinder(0.1f, 0.7f, 32);
 
@@ -233,6 +241,9 @@ public class NPC1 {
                                 GL11.glRotatef(90.0f, 0.0f, -1.0f, 0.0f);
                                 GL11.glRotatef(0.6f*(CommandRotation+45), 1.0f, 0.0f, 1.0f);
                             }
+                            if(working)
+                                GL11.glRotatef(30.0f, 1.0f, 0.0f, 0.0f);
+
                             cylinder.DrawCylinder(0.15f, 0.7f, 32);
 
                             // right elbow
@@ -257,6 +268,9 @@ public class NPC1 {
 //                                        GL11.glRotatef(CommandRotation+45, 0.0f, -1.0f, 1.0f);
                                         GL11.glRotatef(1.5f*(CommandRotation+45), 1.0f, 0.0f, 0.0f);
 
+                                    }
+                                    if(working){
+                                        GL11.glRotatef(-ArmRotation2-25, 1.0f, 0.0f, 0.0f);
                                     }
                                     cylinder.DrawCylinder(0.1f, 0.7f, 32);
 

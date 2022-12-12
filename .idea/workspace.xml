@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add shadow">
-      <change afterPath="$PROJECT_DIR$/src/GraphicsObjects/CheckPhysicsModel.java" afterDir="false" />
+    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add two interative operation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CameraAnimate.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/CheckPhysicsModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/CheckPhysicsModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/Boat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Boat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/objects3D/NPC1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/NPC1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/objects3D/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Tree.java" afterDir="false" />
     </list>
@@ -104,7 +103,7 @@
       <workItem from="1669198819719" duration="15660000" />
       <workItem from="1669692156814" duration="30000" />
       <workItem from="1670724159208" duration="2560000" />
-      <workItem from="1670748736796" duration="16130000" />
+      <workItem from="1670748736796" duration="33249000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1668511381449</created>
@@ -148,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669261391250</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat: add two interative operation">
+      <created>1670810082136</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1670810082136</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -172,6 +178,7 @@
     <MESSAGE value="feat: add crafting table" />
     <MESSAGE value="feat: add animation for camera" />
     <MESSAGE value="feat: add shadow" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add shadow" />
+    <MESSAGE value="feat: add two interative operation" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add two interative operation" />
   </component>
 </project>

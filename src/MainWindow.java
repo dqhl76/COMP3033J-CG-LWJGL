@@ -68,11 +68,15 @@ public class MainWindow {
 
     boolean cutting = false;
     boolean working = false;
+    boolean craft = false;
+
+    boolean operation = false;
 
     int face = 0;
     float local_time_train = 26500;
     float local_cat_time = 0;
     float local_work_time = 0;
+    float local_boat_time = 0;
 
     CheckPhysicsModel checkPhysicsModel = new CheckPhysicsModel(0,0,0);
     /**
@@ -173,6 +177,10 @@ public class MainWindow {
             }
         }
 
+        if(craft){
+            local_boat_time += 1;
+        }
+
         if (MouseButonPressed && !MouseOnepressed) {
             MouseOnepressed = true;
             MyArcball.startBall(MouseX, MouseY, 1200, 800);
@@ -202,22 +210,22 @@ public class MainWindow {
 
         }
 
-        if(!working&&!cutting && Keyboard.isKeyDown(Keyboard.KEY_W) && !checkPhysicsModel.checkBreakout(0,0,3)) {
+        if(!craft&&!working&&!cutting && Keyboard.isKeyDown(Keyboard.KEY_W) && !checkPhysicsModel.checkBreakout(0,0,3)) {
             face = 2;
             z += 3f;
             walking = true;
             camera.position.z -= 2f;
-        }else if(!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_S)&& !checkPhysicsModel.checkBreakout(0,0,-3)) {
+        }else if(!craft&&!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_S)&& !checkPhysicsModel.checkBreakout(0,0,-3)) {
             face = 0;
             z -= 3f;
             walking = true;
             camera.position.z += 2f;
-        }else if(!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_A)&& !checkPhysicsModel.checkBreakout(-1.5f,0,0)) {
+        }else if(!craft&&!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_A)&& !checkPhysicsModel.checkBreakout(-1.5f,0,0)) {
             face = 1;
             walking = true;
             x -= 1.5f;
             camera.position.x += 1.5f;
-        }else if(!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_D)&& !checkPhysicsModel.checkBreakout(1.5f,0,0)) {
+        }else if(!craft&&!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_D)&& !checkPhysicsModel.checkBreakout(1.5f,0,0)) {
             face = 3;
             walking = true;
             x += 1.5f;
@@ -226,9 +234,23 @@ public class MainWindow {
             walking = false;
         }
 
+        if(x>=-830 && x<=-750 && z>=-130 && z<=130){ // cutting tree area
+            if(!cut)
+               operation =true;
+        } else if(x>=-150 && x<=80 && z>=699 && z<=900){
+            if(cut && !train_begin)
+                operation = true;
+        }
+        else if(x>=493 && x<=609 && z>=-336 && z<=198){
+            if(cut && train_begin)
+                operation = true;
+        }else{
+            operation = false;
+        }
+
         if(Keyboard.isKeyDown(Keyboard.KEY_F)){
 //            train_begin = true;
-            if(x>=-801 && x<=-795 && z>=-100 && z<=80){ // cutting tree area
+            if(x>=-830 && x<=-750 && z>=-130 && z<=130){ // cutting tree area
                 cut = true;
             }
 
@@ -236,8 +258,20 @@ public class MainWindow {
                 if(cut) {
                     train_begin = true;
                     working = true;
+                    checkPhysicsModel.updateMine(false);
                 }
             }
+
+            if(x>=493 && x<=609 && z>=-336 && z<=198){
+                if(cut && train_begin){
+                    craft = true;
+                }
+            }
+
+        }
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_G)) {
+            craft = true;
         }
 
 
@@ -281,7 +315,11 @@ public class MainWindow {
      */
     public void updateFPS() {
         if (getTime() - lastFPS > 1000) {
-            Display.setTitle("FPS: " + fps);
+            if(operation){
+                Display.setTitle("You can press F");
+            }else {
+                Display.setTitle("FPS: " + fps);
+            }
             fps = 0;
             lastFPS += 1000;
         }
@@ -419,16 +457,25 @@ public class MainWindow {
             GL11.glTranslatef(900,110,800);
             GL11.glScalef(80f,80f,80f);
             TexCube MyCube = new TexCube();
-
             wood.bind();
             MyCube.DrawTexCube(floor);
             GL11.glPopMatrix();
         }
+        {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(1580,110,-30);
+            GL11.glScalef(80f, 80f, 80f);
+            TexCube cube = new TexCube();
+            cube.DrawTexCube(wood);
+            wood.bind();
+            GL11.glPopMatrix();
+        }
+
 
 
         {
             Tree MyTree = new Tree();
-            MyTree.DrawTree(planks, leaves,cut,train_begin);
+            MyTree.DrawTree(blackTexture,planks, leaves,cut,train_begin,local_boat_time);
 
             {
                 GL11.glPushMatrix();
@@ -462,24 +509,24 @@ public class MainWindow {
             }
         }
 
-        {
-
-            GL11.glPushMatrix();
-            GL11.glTranslatef(2100, 400, 1000);
-            GL11.glRotatef(-45, 1, 0, 0);
-            if(millisecond >= 48000 && millisecond <= 48450) {
-                GL11.glTranslatef(0,-40,0);
-                GL11.glRotatef((float) (millisecond - 48000) / 10, -1, 0, 0); // -45 degree - 45 degree
-                GL11.glTranslatef(0,40,0);
-            }else if(millisecond>48450){
-                GL11.glTranslatef(0,-40,0);
-                GL11.glRotatef(45, -1, 0, 0);
-                GL11.glTranslatef(0,40,0);
-            }
-            Torch torch = new Torch();
-            torch.DrawTorch(wood,torch2);
-            GL11.glPopMatrix();
-        }
+//        {
+//
+//            GL11.glPushMatrix();
+//            GL11.glTranslatef(2100, 400, 1000);
+//            GL11.glRotatef(-45, 1, 0, 0);
+//            if(millisecond >= 48000 && millisecond <= 48450) {
+//                GL11.glTranslatef(0,-40,0);
+//                GL11.glRotatef((float) (millisecond - 48000) / 10, -1, 0, 0); // -45 degree - 45 degree
+//                GL11.glTranslatef(0,40,0);
+//            }else if(millisecond>48450){
+//                GL11.glTranslatef(0,-40,0);
+//                GL11.glRotatef(45, -1, 0, 0);
+//                GL11.glTranslatef(0,40,0);
+//            }
+//            Torch torch = new Torch();
+//            torch.DrawTorch(wood,torch2);
+//            GL11.glPopMatrix();
+//        }
 
         {
 
@@ -580,6 +627,7 @@ public class MainWindow {
 
         }
 
+
 //        System.out.println("timestamp: " + millisecond);
         // draw the NPC1
         {
@@ -592,13 +640,23 @@ public class MainWindow {
                 GL11.glScalef(90f,90f,90f);
                 GL11.glRotatef(0,0,1,0);
                 face = 0;
+            }else if(craft){
+                GL11.glTranslatef(1700,200,-66);
+                GL11.glScalef(90f,90f,90f);
+                GL11.glRotatef(270,0,1,0);
+                face = 3;
+            }else if(cutting){
+                GL11.glTranslatef(160,200,-33);
+                GL11.glScalef(90f,90f,90f);
+                GL11.glRotatef(90,0,1,0);
+                face = 1;
             }else {
                 GL11.glTranslatef(1000, 200, 0);
                 GL11.glTranslatef(x, y, z);
                 GL11.glScalef(90f, 90f, 90f);
                 GL11.glRotatef(90 * face, 0, 1, 0);
             }
-            npc1.DrawHuman(delta,walking,cutting,working,headTexture,tnt,grenade);
+            npc1.DrawHuman(delta,walking,cutting,working,craft,headTexture,tnt,grenade);
             GL11.glPopMatrix();
         }
 
@@ -635,10 +693,24 @@ public class MainWindow {
 //            }
 //        }
 
+
         {
-            if(millisecond>=63500) {
+            if(local_boat_time>=200) {
                 Boat boat = new Boat();
                 boat.DrawBoat(planks);
+                {
+                    GL11.glPushMatrix();
+                    GL11.glTranslatef(2200.0f, 200.0f, -400.0f);
+                    GL11.glScalef(90f, 0.1f, 90f);
+                    blackTexture.bind();
+                    Sphere sphere1 = new Sphere();
+                    sphere1.DrawSphere(1f, 32, 32);
+                    GL11.glPopMatrix();
+                }
+
+            }
+            if(local_boat_time >= 400){
+                craft = false;
             }
         }
 

@@ -6,10 +6,12 @@ import org.newdawn.slick.opengl.Texture;
 
 public class Tree {
     static float militime = 12000;
-    public void DrawTree(Texture planks,Texture leaves, Boolean down, Boolean train_begin) {
+    public void DrawTree(Texture blankT,Texture planks,Texture leaves, Boolean down, Boolean train_begin,float local_boat_time) {
 
         TexCube cube = new TexCube();
         GL11.glPushMatrix();
+
+
 
 
         if(down){
@@ -53,6 +55,16 @@ public class Tree {
                         GL11.glPushMatrix();
                         GL11.glTranslatef(0.0f, -2.0f, 0.0f);
                         cube.DrawTexCube(planks);
+                        {
+                            GL11.glPushMatrix();
+                            Sphere sphere = new Sphere();
+                            blankT.bind();
+                            GL11.glScalef(1f,2f,0.1f);
+                            GL11.glTranslatef(1.0f, 0.6f, -8.0f);
+                            sphere.DrawSphere(2f, 20, 20);
+                            GL11.glPopMatrix();
+                            planks.bind();
+                        }
                         GL11.glPopMatrix();
                     }
                     GL11.glPopMatrix();
@@ -60,15 +72,28 @@ public class Tree {
                 }
                 GL11.glPopMatrix();
             }else if(militime >= 50000) {
+                GL11.glPushMatrix();
                 Wood wood = new Wood();
-                if(militime>=62000) {
-                    if((militime-62000)/3000f<1) {
-                        GL11.glScalef(1,1, 1 - (militime - 62000) / 3000f);
+                if(local_boat_time != 0) {
+                    if(local_boat_time<400) {
+                        GL11.glScalef(1,1, 1 - local_boat_time / 400f);
                     }else{
                         GL11.glScalef(0f,0f, 0f);
                     }
                 }
                 wood.DrawWood(planks);
+                {
+                        GL11.glPushMatrix();
+                        Sphere sphere = new Sphere();
+                        blankT.bind();
+                        GL11.glScalef(1f,2f,0.1f);
+                        GL11.glTranslatef(27.0f, -2.5f, 7.0f);
+                        sphere.DrawSphere(2f, 20, 20);
+                        GL11.glPopMatrix();
+                        planks.bind();
+
+                }
+                GL11.glPopMatrix();
             }
             else {
                 if (down) {
@@ -85,6 +110,16 @@ public class Tree {
                         GL11.glTranslatef(0.0f, 1.0f, -1.0f);
                         GL11.glRotatef(180, 1.0f, 0.0f, 0.0f);
                         GL11.glTranslatef(0.0f, -1.0f, 1.0f);
+                        {
+                            GL11.glPushMatrix();
+                            Sphere sphere = new Sphere();
+                            blankT.bind();
+                            GL11.glScalef(1f,2f,0.1f);
+                            GL11.glTranslatef(1.0f, -1.5f, -28.0f);
+                            sphere.DrawSphere(2f, 20, 20);
+                            GL11.glPopMatrix();
+                            planks.bind();
+                        }
                         if (time <= 23000) {
                             GL11.glTranslatef(0.0f, 0.0f, -(time - 22000) / 10000.0f * 18);
                         } else {

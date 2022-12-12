@@ -15,6 +15,13 @@ public Boat() {
        cube.DrawTexCube(planks);
         {
             GL11.glPushMatrix();
+
+            GL11.glPopMatrix();
+        }
+
+
+        {
+            GL11.glPushMatrix();
             GL11.glTranslatef(1.0f, 3.5f, 0.0f);
             GL11.glScalef(0.1f, 3f, 1f);
             cube.DrawTexCube(planks);
