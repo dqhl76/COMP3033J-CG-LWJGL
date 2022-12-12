@@ -42,6 +42,8 @@ public class NPC1 {
     public void DrawHuman(float delta,boolean walk, boolean cut,boolean command, Texture headTexture, Texture tnt, Texture grenade) {
         float theta = (float) (delta * 2 * Math.PI);
 
+
+
         float WalkRotation = (float) Math.cos(theta * 5) * 70; // I speed up the rotation of the human's leg, it looks more natural
         float CutTreeRotation = (float) Math.cos(theta * 5) * 45; // -45 ~ 0 ~ 45
         float CommandRotation = (float) Math.cos(theta * 5) * 45; // -45 ~ 0 ~ 45

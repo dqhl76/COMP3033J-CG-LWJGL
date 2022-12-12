@@ -50,6 +50,10 @@ public class MainWindow {
      */
     long lastFPS;
 
+    float x = 0;
+    float y = 0;
+    float z = 0;
+
     long myDelta = 0; //to use for animation
     float Alpha = 0; //to use for animation
     long StartTime; // beginAnimiation
@@ -58,6 +62,19 @@ public class MainWindow {
 
     boolean DRAWGRID = false;
     boolean waitForKeyrelease = true;
+    boolean walking = true;
+    boolean train_begin = false;
+    boolean cut = false;
+
+    boolean cutting = false;
+    boolean working = false;
+
+    int face = 0;
+    float local_time_train = 26500;
+    float local_cat_time = 0;
+    float local_work_time = 0;
+
+    CheckPhysicsModel checkPhysicsModel = new CheckPhysicsModel(0,0,0);
     /**
      * Mouse movement
      */
@@ -96,7 +113,6 @@ public class MainWindow {
     // static GLfloat light_position[] = {0.0, 100.0, 100.0, 0.0};
 
     //support method to aid in converting a java float array into a Floatbuffer which is faster for the opengl layer to process
-    CameraAnimate cameraAnimate ;
 
     public void start() {
 
@@ -110,7 +126,6 @@ public class MainWindow {
         }
 
         initGL(); // init OpenGL
-        cameraAnimate = new CameraAnimate(camera);
 //        new CameraAnimate(camera,10,StartTime).start(); // start the camera animation thread
         getDelta(); // call once before loop to initialise lastFrame
         lastFPS = getTime(); // call before loop to initialise fps timer
@@ -131,6 +146,7 @@ public class MainWindow {
         // rotate quad
         //rotation += 0.01f * delta;
 
+        checkPhysicsModel.updatePosition(x,y,z);
 
         int MouseX = Mouse.getX();
         int MouseY = Mouse.getY();
@@ -139,6 +155,23 @@ public class MainWindow {
 
         boolean MouseButonPressed = Mouse.isButtonDown(0);
 
+        if(cut){
+            local_cat_time += 1;
+            if(local_cat_time <= 700) {
+                cutting = true;
+            }else{
+                cutting = false;
+            }
+        }
+
+        if(working){
+            local_work_time += 1;
+            if(local_work_time <= 1400){
+                working = true;
+            }else{
+                working = false;
+            }
+        }
 
         if (MouseButonPressed && !MouseOnepressed) {
             MouseOnepressed = true;
@@ -169,64 +202,48 @@ public class MainWindow {
 
         }
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_R))
-            MyArcball.reset();
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-            camera.position.x += 5f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
-            camera.position.x -= 5f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            camera.position.y -= 5f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            camera.position.y += 5f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-            camera.position.z += 10f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            camera.position.z -= 10f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-            camera.rotation.x -= 0.05f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-            camera.rotation.x += 0.05f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-            camera.rotation.y -= 0.05f;
-        }else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-            camera.rotation.y += 0.05f;
+        if(!working&&!cutting && Keyboard.isKeyDown(Keyboard.KEY_W) && !checkPhysicsModel.checkBreakout(0,0,3)) {
+            face = 2;
+            z += 3f;
+            walking = true;
+            camera.position.z -= 2f;
+        }else if(!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_S)&& !checkPhysicsModel.checkBreakout(0,0,-3)) {
+            face = 0;
+            z -= 3f;
+            walking = true;
+            camera.position.z += 2f;
+        }else if(!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_A)&& !checkPhysicsModel.checkBreakout(-1.5f,0,0)) {
+            face = 1;
+            walking = true;
+            x -= 1.5f;
+            camera.position.x += 1.5f;
+        }else if(!working&&!cutting&&Keyboard.isKeyDown(Keyboard.KEY_D)&& !checkPhysicsModel.checkBreakout(1.5f,0,0)) {
+            face = 3;
+            walking = true;
+            x += 1.5f;
+            camera.position.x -= 1.5f;
+        }else{
+            walking = false;
         }
 
-//        System.out.println(camera.position);
-//            MyArcball.reset();
+        if(Keyboard.isKeyDown(Keyboard.KEY_F)){
+//            train_begin = true;
+            if(x>=-801 && x<=-795 && z>=-100 && z<=80){ // cutting tree area
+                cut = true;
+            }
 
-
-
-
-
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_Q))
-            rotation += 0.35f * delta;
-
-        if (waitForKeyrelease) // check done to see if key is released
-        {
-            if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
-
-                DRAWGRID = !DRAWGRID;
-                Keyboard.next();
-                if (Keyboard.isKeyDown(Keyboard.KEY_G)) {
-                    waitForKeyrelease = true;
-                } else {
-                    waitForKeyrelease = false;
-
+            if(x>=-150 && x<=80 && z>=699 && z<=900){
+                if(cut) {
+                    train_begin = true;
+                    working = true;
                 }
             }
         }
 
-        /** to check if key is released */
-        if (Keyboard.isKeyDown(Keyboard.KEY_G) == false) {
-            waitForKeyrelease = true;
-        } else {
-            waitForKeyrelease = false;
 
-        }
+        System.out.println(x + " " + y + " " + z);
+
+
 
 
         updateFPS(); // update FPS Counter
@@ -273,7 +290,7 @@ public class MainWindow {
 
     public void initGL() {
 
-        camera = new Camera(new Point4f(150.0f,-130.0f,0.0f,0.0f),new Vector4f(-13.2f,15.35f,0,0),OrthoNumber);
+        camera = new Camera(new Point4f(-350.0f,-175.0f,0.0f,0.0f),new Vector4f(-13.2f,3.34f,0,0),OrthoNumber);
         camera.OrthNumber = 1570;
         camera.update();
 
@@ -365,7 +382,6 @@ public class MainWindow {
         myDelta = getTime() - StartTime+0;
         float delta = ((float) myDelta) / 10000;
         int millisecond = ((int) myDelta); // 1000 milliseconds in a second
-        cameraAnimate.update(millisecond);
 //        millisecond += 24000;
 //        System.out.println(millisecond);
         // code to aid in animation
@@ -390,18 +406,30 @@ public class MainWindow {
             GL11.glPopMatrix();
         }
 
+
+
         {
             Floor f = new Floor();
             f.draw(floor);
         }
 
         {
+            GL11.glPushMatrix();
+//            GL11.glTranslatef(0,400,0);
+            GL11.glTranslatef(900,110,800);
+            GL11.glScalef(80f,80f,80f);
+            TexCube MyCube = new TexCube();
+
+            wood.bind();
+            MyCube.DrawTexCube(floor);
+            GL11.glPopMatrix();
+        }
+
+
+        {
             Tree MyTree = new Tree();
-            if(millisecond>=12000) {
-                MyTree.DrawTree(planks, leaves,true,millisecond);
-            }else{
-                MyTree.DrawTree(planks,leaves,false,millisecond);
-            }
+            MyTree.DrawTree(planks, leaves,cut,train_begin);
+
             {
                 GL11.glPushMatrix();
                 GL11.glTranslatef(100, 180, 0);
@@ -510,12 +538,14 @@ public class MainWindow {
 
 
         {
-            boolean run = false;
             GL11.glPushMatrix();
             Mine mine1 = new Mine();
-            if(millisecond >= 27000 && millisecond < 48000){
-                GL11.glTranslatef((millisecond-27000)/10,0,0);
-            }else if(millisecond >= 48000){
+            if(train_begin){
+                local_time_train += 10;
+            }
+            if(local_time_train >= 27000 && local_time_train < 48000){
+                GL11.glTranslatef((local_time_train-27000)/10,0,0);
+            }else if(local_time_train >= 48000){
                 GL11.glTranslatef((48000-27000)/10,0,0);
             }
             mine1.DrawMine(mine, blackTexture);
@@ -550,74 +580,60 @@ public class MainWindow {
 
         }
 
-        System.out.println("timestamp: " + millisecond);
+//        System.out.println("timestamp: " + millisecond);
         // draw the NPC1
         {
+            System.out.println("face:" + face);
+
             GL11.glPushMatrix();
             NPC1 npc1 = new NPC1();
-            GL11.glTranslatef(1000, 200, 0);
-            GL11.glScalef(90f, 90f, 90f);
-            if(millisecond <= 9500){
-                GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                GL11.glTranslatef(0,0,(float) (-millisecond/1000.0) );
-                npc1.DrawHuman(delta,true,false,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
-
-            }else if(millisecond <= 16000 && millisecond >9500){
-                GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                GL11.glTranslatef(0,0,-9.5f );
-                npc1.DrawHuman(delta,false,true,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
-            }else if(millisecond <= 25000 && millisecond >16000){
-                GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                GL11.glTranslatef(0,0,-9.5f );
-                GL11.glRotatef(245, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                GL11.glTranslatef(0,0,(float) (-(millisecond-16000)/1000.0) );
-                npc1.DrawHuman(delta,true,false,false, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
-            }else{
-                GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                GL11.glTranslatef(0,0,-9.5f );
-                GL11.glRotatef(245, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                GL11.glTranslatef(0,0, -9.0f);
-                GL11.glRotatef(165, 0.0f, 1.0f, 0.0f);
-                npc1.DrawHuman(delta,false,false,true, headTexture, tnt, grenade); // give a delta for the Human object ot be animated
+            if(working){
+                GL11.glTranslatef(885,200,735);
+                GL11.glScalef(90f,90f,90f);
+                GL11.glRotatef(0,0,1,0);
+                face = 0;
+            }else {
+                GL11.glTranslatef(1000, 200, 0);
+                GL11.glTranslatef(x, y, z);
+                GL11.glScalef(90f, 90f, 90f);
+                GL11.glRotatef(90 * face, 0, 1, 0);
             }
-//            GL11.glTranslatef(-posn_x * 3, 0.0f, -posn_y * 3);
-            // insert your animation code to correct the postion for the human rotating
-
+            npc1.DrawHuman(delta,walking,cutting,working,headTexture,tnt,grenade);
             GL11.glPopMatrix();
         }
 
-        {
-            if(millisecond >= 41000) {
-                GL11.glPushMatrix();
-                NPC2 npc2 = new NPC2();
-                if(millisecond<=50000) {
-                    GL11.glTranslatef(2100, 200, 900);
-                    GL11.glScalef(90f, 90f, 90f);
-                    GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
-                    npc2.DrawHuman(delta, false,false, headTexture, tnt, grenade, millisecond);
-                }else if(millisecond<=53000){
-                    GL11.glTranslatef(2100, 200, 900);
-                    GL11.glTranslatef(-(millisecond-50000)/10,0,0);
-                    GL11.glScalef(90f, 90f, 90f);
-                    GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f);
-                    npc2.DrawHuman(delta, true,false, headTexture, tnt, grenade, millisecond);
-                }else if(millisecond<=61000){
-                    GL11.glTranslatef(1800, 200, 900);
-                    GL11.glTranslatef(0,0,-(millisecond-53000)/10);
-                    GL11.glScalef(90f, 90f, 90f);
-                    npc2.DrawHuman(delta, true,false, headTexture, tnt, grenade, millisecond);
-                }else if(millisecond<=71000){
-                    GL11.glTranslatef(1800, 200, 0);
-                    GL11.glScalef(90f, 90f, 90f);
-                    npc2.DrawHuman(delta, false,true, headTexture, tnt, grenade, millisecond);
-                }else{
-                    GL11.glTranslatef(1800, 200, 0);
-                    GL11.glScalef(90f, 90f, 90f);
-                    npc2.DrawHuman(delta, false,false, headTexture, tnt, grenade, millisecond);
-                }
-                GL11.glPopMatrix();
-            }
-        }
+//        {
+//            if(millisecond >= 41000) {
+//                GL11.glPushMatrix();
+//                NPC2 npc2 = new NPC2();
+//                if(millisecond<=50000) {
+//                    GL11.glTranslatef(2100, 200, 900);
+//                    GL11.glScalef(90f, 90f, 90f);
+//                    GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f); // rotate the human during the animation
+//                    npc2.DrawHuman(delta, false,false, headTexture, tnt, grenade, millisecond);
+//                }else if(millisecond<=53000){
+//                    GL11.glTranslatef(2100, 200, 900);
+//                    GL11.glTranslatef(-(millisecond-50000)/10,0,0);
+//                    GL11.glScalef(90f, 90f, 90f);
+//                    GL11.glRotatef(-90, 0.0f, -1.0f, 0.0f);
+//                    npc2.DrawHuman(delta, true,false, headTexture, tnt, grenade, millisecond);
+//                }else if(millisecond<=61000){
+//                    GL11.glTranslatef(1800, 200, 900);
+//                    GL11.glTranslatef(0,0,-(millisecond-53000)/10);
+//                    GL11.glScalef(90f, 90f, 90f);
+//                    npc2.DrawHuman(delta, true,false, headTexture, tnt, grenade, millisecond);
+//                }else if(millisecond<=71000){
+//                    GL11.glTranslatef(1800, 200, 0);
+//                    GL11.glScalef(90f, 90f, 90f);
+//                    npc2.DrawHuman(delta, false,true, headTexture, tnt, grenade, millisecond);
+//                }else{
+//                    GL11.glTranslatef(1800, 200, 0);
+//                    GL11.glScalef(90f, 90f, 90f);
+//                    npc2.DrawHuman(delta, false,false, headTexture, tnt, grenade, millisecond);
+//                }
+//                GL11.glPopMatrix();
+//            }
+//        }
 
         {
             if(millisecond>=63500) {

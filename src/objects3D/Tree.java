@@ -5,13 +5,23 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 public class Tree {
-    public void DrawTree(Texture planks,Texture leaves, Boolean down, float militime) {
+    static float militime = 12000;
+    public void DrawTree(Texture planks,Texture leaves, Boolean down, Boolean train_begin) {
 
         TexCube cube = new TexCube();
         GL11.glPushMatrix();
 
 
         if(down){
+            if(militime==27000){
+
+            }else {
+                militime += 10;
+            }
+            if(train_begin){
+                militime += 0.1f;
+            }
+            System.out.println(militime);
             GL11.glTranslatef(0.0f, 240f, 1.0f);
             GL11.glScalef(80.0f, 80.0f, 80.0f);
         }else{

@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add animation for camera">
+    <list default="true" id="6c57aab4-f828-4ffd-a714-be8d90265e80" name="Changes" comment="feat: add shadow">
+      <change afterPath="$PROJECT_DIR$/src/GraphicsObjects/CheckPhysicsModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/CameraAnimate.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GraphicsObjects/Camera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/NPC1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/NPC1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/objects3D/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/objects3D/Tree.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,23 +46,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "JavaSE-1.8",
-    "last_opened_file_path": "/Users/lqyue/IdeaProjects/CG_Final/res",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;JavaSE-1.8&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lqyue/IdeaProjects/CG_Final/res&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/res" />
@@ -96,7 +101,10 @@
       <workItem from="1668562513827" duration="43509000" />
       <workItem from="1668657055698" duration="42906000" />
       <workItem from="1669100695036" duration="22981000" />
-      <workItem from="1669198819719" duration="15527000" />
+      <workItem from="1669198819719" duration="15660000" />
+      <workItem from="1669692156814" duration="30000" />
+      <workItem from="1670724159208" duration="2560000" />
+      <workItem from="1670748736796" duration="16130000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1668511381449</created>
@@ -133,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669257344259</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat: add shadow">
+      <created>1669261391250</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1669261391250</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +171,7 @@
     <MESSAGE value="feat: add animation" />
     <MESSAGE value="feat: add crafting table" />
     <MESSAGE value="feat: add animation for camera" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add animation for camera" />
+    <MESSAGE value="feat: add shadow" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add shadow" />
   </component>
 </project>
