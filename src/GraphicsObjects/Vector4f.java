@@ -1,6 +1,7 @@
 package GraphicsObjects;
 
 
+import org.lwjgl.opengl.GL11;
 
 public class Vector4f {
 
@@ -74,7 +75,8 @@ public class Vector4f {
 	{
 	    return (float) Math.sqrt(x*x + y*y + z*z+ a*a);
 	}
-	
+
+
 	//Just to avoid confusion here is getting the Normal  of a Vector  
 	public Vector4f Normal()
 	{
